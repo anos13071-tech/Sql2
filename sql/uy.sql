@@ -84,3 +84,223 @@ select sum(quantity) as sotilgan from sales WHERE sale_date = '2025-01-01';
 select category, sum(quantity)  as Eng_kattasi from sales GROUP by category ORDER by Eng_kattasi DESC LIMIT 1;
 ----10
 select category , sum(price * quantity) as mana from sales WHERE quantity > 3 group by category;
+
+
+
+
+SHOW databases; -- Mavjud database larni ko'rsatadi
+
+CREATE DATABASE found192;
+CREATE DATABASE IF NOT EXISTS found192; -- Mavjud bo'lmasagina yaratadi
+
+DROP DATABASE kiyik;
+DrOp DaTaBaSe If ExIsTs kiyik;
+
+USE found192; -- Ko'rsatilga database ichiga kiradi
+
+CREATE TABLE talabalar(id INT, name VARCHAR(50), second TEXT, birth DATE, stipendiya REAL);
+
+INSERT INTO talabalar VALUES(1, "Ali", "Karimov", "2025-01-26", 45.6);
+INSERT INTO talabalar VALUES(2, "Karim", "Valiyev", "2026-02-12", 45.3), 
+                            (3, "Jonibek", "Karimov", "2020-12-12", 41.6),
+                            (4, "Vali", "Axmadjonov", "2005-06-14", 25.6);
+
+
+SELECT 2+2;
++-----+
+| 2+2 |
++-----+
+|   4 |
++-----+
+
+SELECT NOW();
++---------------------+
+| NOW()               |
++---------------------+
+| 2026-04-22 17:57:56 |
++---------------------+
+
+SELECT LENGTH("salom");
++-----------------+
+| LENGTH("salom") |
++-----------------+
+|               5 |
++-----------------+
+
+SELECT LENGTH("salom") AS uzunlik;
++---------+
+| uzunlik |
++---------+
+|       5 |
++---------+
+
+SELECT "G'ani" AS ism, "Karimov" AS familiya;
+-- +-------+----------+
+-- | ism   | familiya |
+-- +-------+----------+
+-- | G'ani | Karimov  |
+-- +-------+----------+
+
+SELECT CONCAT("G'ani", " ", "Karimov") AS full_name;
+-- +---------------+
+-- | full_name     |
+-- +---------------+
+-- | G'ani Karimov |
+-- +---------------+
+
+
+
+SELECT * FROM talabalar;
++------+---------+------------+------------+------------+
+| id   | name    | second     | birth      | stipendiya |
++------+---------+------------+------------+------------+
+|    1 | Ali     | Karimov    | 2025-01-26 |       45.6 |
+|    2 | Karim   | Valiyev    | 2026-02-12 |       45.3 |
+|    3 | Jonibek | Karimov    | 2020-12-12 |       41.6 |
+|    4 | Vali    | Axmadjonov | 2005-06-14 |       25.6 |
++------+---------+------------+------------+------------+
+
+
+SELECT name, YEAR(birth), stipendiya FROM talabalar;
++---------+-------------+------------+
+| name    | YEAR(birth) | stipendiya |
++---------+-------------+------------+
+| Ali     |        2025 |       45.6 |
+| Karim   |        2026 |       45.3 |
+| Jonibek |        2020 |       41.6 |
+| Vali    |        2005 |       25.6 |
++---------+-------------+------------+
+
+
+SELECT CONCAT(name, " ", second) AS full_name, stipendiya, birth FROM talabalar;
++-----------------+------------+------------+
+| full_name       | stipendiya | birth      |
++-----------------+------------+------------+
+| Ali Karimov     |       45.6 | 2025-01-26 |
+| Karim Valiyev   |       45.3 | 2026-02-12 |
+| Jonibek Karimov |       41.6 | 2020-12-12 |
+| Vali Axmadjonov |       25.6 | 2005-06-14 |
++-----------------+------------+------------+
+
+----------------------------------------------------------------------FILTRLASH
+
+SELECT * FROM talabalar WHERE YEAR(birth) = 2025;
+SELECT * FROM talabalar WHERE birth LIKE "2025%";
++------+------+---------+------------+------------+
+| id   | name | second  | birth      | stipendiya |
++------+------+---------+------------+------------+
+|    1 | Ali  | Karimov | 2025-01-26 |       45.6 |
++------+------+---------+------------+------------+
+
+SELECT * FROM talabalar WHERE stipendiya>=45 AND stipendiya<=46;
+SELECT * FROM talabalar WHERE stipendiya BETWEEN 45 AND 46;
++------+-------+---------+------------+------------+
+| id   | name  | second  | birth      | stipendiya |
++------+-------+---------+------------+------------+
+|    1 | Ali   | Karimov | 2025-01-26 |       45.6 |
+|    2 | Karim | Valiyev | 2026-02-12 |       45.3 |
++------+-------+---------+------------+------------+
+
+SELECT * FROM talabalar WHERE MONTH(birth)=1 OR MONTH(birth)=2 OR MONTH(birth)=12;
+SELECT * FROM talabalar WHERE MONTH(birth) IN (1, 2, 12);
++------+---------+---------+------------+------------+
+| id   | name    | second  | birth      | stipendiya |
++------+---------+---------+------------+------------+
+|    1 | Ali     | Karimov | 2025-01-26 |       45.6 |
+|    2 | Karim   | Valiyev | 2026-02-12 |       45.3 |
+|    3 | Jonibek | Karimov | 2020-12-12 |       41.6 |
++------+---------+---------+------------+------------+
+
+
+SELECT * FROM talabalar WHERE name LIKE "a%";
++------+------+---------+------------+------------+
+| id   | name | second  | birth      | stipendiya |
++------+------+---------+------------+------------+
+|    1 | Ali  | Karimov | 2025-01-26 |       45.6 |
++------+------+---------+------------+------------+
+
+"%a" -- oxiri a bilan tugaganlari haqida 
+"%a%" -- a harfi ishtirok etgan bo'sa bo'ldi
+"____-05%"
+"_a%"
+
+SELECT * FROM talabalar WHERE name LIKE "_a%" AND second LIKE "_a%";
++------+-------+---------+------------+------------+
+| id   | name  | second  | birth      | stipendiya |
++------+-------+---------+------------+------------+
+|    2 | Karim | Valiyev | 2026-02-12 |       45.3 |
++------+-------+---------+------------+------------+
+
+--------------------------------------------------------------SORTLASH
+
+SELECT * FROM talabalar ORDER BY name;
+
+
+SELECT * FROM talabalar ORDER BY YEAR(birth);
++------+---------+------------+------------+------------+
+| id   | name    | second     | birth      | stipendiya |
++------+---------+------------+------------+------------+
+|    4 | Vali    | Axmadjonov | 2005-06-14 |       25.6 |
+|    3 | Jonibek | Karimov    | 2020-12-12 |       41.6 |
+|    1 | Ali     | Karimov    | 2025-01-26 |       45.6 |
+|    2 | Karim   | Valiyev    | 2026-02-12 |       45.3 |
++------+---------+------------+------------+------------+
+
+SELECT * FROM talabalar ORDER BY id DESC;
++------+---------+------------+------------+------------+
+| id   | name    | second     | birth      | stipendiya |
++------+---------+------------+------------+------------+
+|    4 | Vali    | Axmadjonov | 2005-06-14 |       25.6 |
+|    3 | Jonibek | Karimov    | 2020-12-12 |       41.6 |
+|    2 | Karim   | Valiyev    | 2026-02-12 |       45.3 |
+|    1 | Ali     | Karimov    | 2025-01-26 |       45.6 |
++------+---------+------------+------------+------------+
+
+
+SELECT * FROM talabalar WHERE name LIKE "%a%" ORDER BY stipendiya;
++------+-------+------------+------------+------------+
+| id   | name  | second     | birth      | stipendiya |
++------+-------+------------+------------+------------+
+|    4 | Vali  | Axmadjonov | 2005-06-14 |       25.6 |
+|    2 | Karim | Valiyev    | 2026-02-12 |       45.3 |
+|    1 | Ali   | Karimov    | 2025-01-26 |       45.6 |
++------+-------+------------+------------+------------+
+
+
+
+ SELECT * FROM talabalar ORDER BY second, name DESC;
++------+---------+------------+------------+------------+
+| id   | name    | second     | birth      | stipendiya |
++------+---------+------------+------------+------------+
+|    4 | Vali    | Axmadjonov | 2005-06-14 |       25.6 |
+|    3 | Jonibek | Karimov    | 2020-12-12 |       41.6 |
+|    1 | Ali     | Karimov    | 2025-01-26 |       45.6 |
+|    2 | Karim   | Valiyev    | 2026-02-12 |       45.3 |
++------+---------+------------+------------+------------+
+
+
+SELECT * FROM talabalar ORDER BY stipendiya DESC LIMIT 1;
++------+------+---------+------------+------------+
+| id   | name | second  | birth      | stipendiya |
++------+------+---------+------------+------------+
+|    1 | Ali  | Karimov | 2025-01-26 |       45.6 |
++------+------+---------+------------+------------+
+
+
+SELECT * FROM book LIMIT 2 OFFSET 5;
+-- +----+----------------+--------+--------+------+------+
+-- | id | name           | price  | amount | j_id | a_id |
+-- +----+----------------+--------+--------+------+------+
+-- |  6 | Harry Potter   |  25000 |      5 |    1 |    3 |
+-- |  7 | Norveg O'rmoni | 500000 |      2 |    3 |    2 |
+-- +----+----------------+--------+--------+------+------+
+
+---------------------------------------------------------------
+
+UPDATE talabalar SET name="Ali", second="Valiyev" WHERE id = 4;
+UPDATE talabalar SET stipendiya=0 ORDER BY stipendiya DESC LIMIT 1;
+
+---------------------------------------------------------------
+
+DELETE FROM talabalar;
+DELETE FROM talabalar WHERE .... ;
